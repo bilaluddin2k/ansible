@@ -1,0 +1,12 @@
+- name: kill docker service
+  hosts: 10.191.144.44
+  tasks:
+   - name: Get Docker service PID
+     shell: ps -ef | grep -i "dockerd" | grep -v "grep" | awk '{print \$2}'
+     register: docker_pid
+     ignore_errors: true
+
+   - name: Kill Docker service
+     shell: |
+      kill -9 {{ docker_pid.stdout }}
+     ignore_errors: true
